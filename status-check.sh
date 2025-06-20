@@ -1,4 +1,3 @@
-cat << 'EOF' > status-check.sh
 #!/bin/bash
 # Script de exemplo para checar status de um site
 URL="https://www.infnet.edu.br/infnet/"
@@ -12,4 +11,3 @@ else
   echo "Site acessível com sucesso."
   exit 0
 fi
-EOF
