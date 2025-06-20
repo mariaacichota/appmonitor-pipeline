@@ -1,5 +1,3 @@
-#!/bin/bash
-# Script de exemplo para checar status de um site
 URL="https://www.infnet.edu.br/infnet/"
 STATUS=$(curl -o /dev/null -s -w "%{http_code}\n" "$URL")
 
