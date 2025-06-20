@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   pull_request:
 
+env:
+  ACTIONS_STEP_DEBUG: true
+
 jobs:
   validate:
     name: Validação do Script
@@ -14,7 +17,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verificar sintaxe do script Bash
-        run: bash -n status-check.sh
+        run: |
+          if ! bash -n status-check.sh; then
+            echo "::error::Erro de sintaxe detectado no status-check.sh"
+            exit 1
+          else
+            echo "::notice::Script válido"
+          fi
 
   test:
     name: Execução dos Testes
@@ -27,6 +36,7 @@ jobs:
       - name: Rodar testes simulados
         run: |
           echo "Running tests"
+          echo "::warning::Testes simulados — nenhum teste real foi executado"
           exit 0
 
   package:
@@ -42,9 +52,17 @@ jobs:
           mkdir -p report
           echo "Relatório gerado em $(date)" > report/summary.txt
           zip -r report.zip report/
+          echo "::notice::Arquivo report.zip gerado"
 
       - name: Upload do artefato
         uses: actions/upload-artifact@v4
         with:
           name: report
           path: report.zip
+
+      - name: Gerar resumo do job
+        run: |
+          echo "## CI Summary :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          echo "- Sistema operacional: \`$RUNNER_OS\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`$GITHUB_REF_NAME\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artefato: [report.zip](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
