@@ -34,6 +34,3 @@ jobs:
         run: |
           echo "Diagnóstico concluído" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Sugestões de Correção:" >> $GITHUB_STEP_SUMMARY
-          echo "- Verifique se **APP_ENV** está definido em Settings > Variables" >> $GITHUB_STEP_SUMMARY
-          echo "- Verifique se **API_KEY** está definido em Settings > Secrets" >> $GITHUB_STEP_SUMMARY
