@@ -1,0 +1,32 @@
+name: Run Monitor Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  use-env:
+    name: Usar Variáveis de Ambiente Diretas (env)
+    runs-on: ubuntu-latest
+    env:
+      MONITOR_TARGET: example.com
+    steps:
+      - name: Mostrar variável de ambiente
+        run: echo "Monitorando $MONITOR_TARGET"
+
+  use-vars:
+    name: Usar Variáveis do GitHub (vars)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar variáveis do GitHub
+        run: |
+          echo "Ambiente: ${{ vars.APP_ENV }}"
+          echo "Suporte: ${{ vars.SUPPORT_EMAIL }}"
+
+  use-secrets:
+    name: Usar Segredos do GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acessar segredo
+        run: echo "A chave de API está configurada (oculta)"
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
